@@ -24,28 +24,8 @@ import Modal from './Modal.jsx';
 
 import Seed from './Seed.jsx'
 
+import { Tracker } from 'meteor/tracker'
 
-
-// $(document).ready(function () {
-
-//     var browse = $('.browse');
-//     var origOffsetY = browse.offset().top;
-
-//     function scroll() {
-//         if ($(window).scrollTop() >= origOffsetY) {
-//             $('.browse').addClass('sticky');
-//             $('.card').addClass('browse-padding');
-//         } else {
-//             $('.browse').removeClass('sticky');
-//             $('.card').removeClass('browse-padding');
-//         }
-
-
-//     }
-
-//     document.onscroll = scroll;
-
-// });
 // App component - represents the whole app
  class App extends Component {
   constructor(props) {
@@ -57,10 +37,17 @@ import Seed from './Seed.jsx'
   componentDidMount() {
 
   }
+  // Tracker.autorun(function () {
+  //   if (!Meteor.user()) {
+  //    Flowrouter.go('/')
+  //   }
+
+  // });
 
   setVar() {
     Session.set('Meteor.loginButtons.dropdownVisible', true);
   }
+  // console.log("in app", 'Meteor.loginButtons.dropdownVisible');
   render() {
 
 
@@ -75,17 +62,13 @@ import Seed from './Seed.jsx'
       <div>
         <NavBar/>
         <div className="jumbotron jumbotron-fluid">
-          <div className="container">
-            <p className="display-3 glyphicon glyphicon-tree-conifer"></p>
-            <h1 className="lead">Guide Me</h1>
-            {console.log("in return", Session.get('test'))}
-            <button className="sign_up_button btn btn-default" onClick={this.setVar}>Sign Up</button>
+          <div className="container text-center">
+            <h1 className="lead">Our Guides. Your Adventure.</h1>
+            {Meteor.user() ? "" :<button className="sign_up_button btn btn-default" onClick={this.setVar}>Sign Up</button>}
           </div>
-
         </div>
         <div>
-
-            {this.props.content}
+          {this.props.content}
         </div>
       </div>
     )

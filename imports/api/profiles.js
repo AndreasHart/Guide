@@ -20,14 +20,15 @@ Meteor.methods({
 
     // Make sure the user is logged in before inserting his profile
 
-    //console.log( 'profiles.addUserProfile', text );
+
+    console.log( 'profiles.addUserProfile', info );
     user = Meteor.users.find(this.userId)
     //console.log('user:::::::', user)
     if (!this.userId) {
       throw new Meteor.Error('not-authorized');
     }
     console.log('ID', this.userId)
-    Meteor.users.update(this.userId, {$set:{info}});
+    Meteor.users.update({_id:this.userId}, {$set:{info}});
     Roles.addUsersToRoles(this.userId , 'user');
   },
 
@@ -36,7 +37,7 @@ Meteor.methods({
     // Make sure the user is logged in before inserting his profile
 
     //console.log( 'profiles.addUserProfile', text );
-    user = Meteor.users.find(this.userId)
+    user = Meteor.users.find(this.userId);
     //console.log('user:::::::', user)
     if (!this.userId) {
       throw new Meteor.Error('not-authorized');

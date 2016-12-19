@@ -49,8 +49,8 @@ export default class Profile extends Component {
         <button data-collection="Users" onClick={this.seedDatabase} className="btn btn-success">Seed Users</button>
         <button data-collection="Users" onClick={this.clearDatabase} className="btn btn-danger">Clear Users</button>
 
-        <button data-collection="Events" onClick={this.seedDatabase} className="btn btn-success">Seed Products</button>
-        <button data-collection="Events" onClick={this.clearDatabase} className="btn btn-danger">Clear Products</button>
+        <button data-collection="Events" onClick={this.seedDatabase} className="btn btn-success">Seed Events</button>
+        <button data-collection="Events" onClick={this.clearDatabase} className="btn btn-danger">Clear Events</button>
       </div>
       )
   }

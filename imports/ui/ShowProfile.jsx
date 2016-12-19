@@ -46,7 +46,6 @@ class ShowProfile extends Component {
         console.log('show profile', user[0]);
         return ( <span className='text'>
                   <div>Name: {user[0].info.name} </div> <div> {user[0].info.lastName} </div><br/>
-                  <div>Date of Birth: {user[0].info.dob.toDateString} </div><br/>
                   <div>Bio: {user[0].info.bio} </div><br/>
                   <div>Interests: {user[0].info.interests} </div><br/>
                 </span>
@@ -106,3 +105,5 @@ Meteor.subscribe("allUsers");
    users: Meteor.users.find({},{sort:{_id:-1}}).fetch(),
   };
 }, ShowProfile);
+
+ // <div>Date of Birth: {user[0].info.dob.toDateString} </div><br/>

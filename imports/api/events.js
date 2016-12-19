@@ -24,6 +24,7 @@ import { Class } from 'meteor/jagi:astronomy';
 //})
 
 export const Events =  new Mongo.Collection('events');
+
 if (Meteor.isServer) {
   // This code only runs on the server
   // Only publish events that are public or belong to the current user
@@ -45,7 +46,7 @@ Meteor.methods({
     Events.insert({
       text,
       createdAt: new Date(),
-      owner: this.userId,
+      owner: this.userId || '8Thtitjy3BgNtBqT2' ,
 
     });
   },

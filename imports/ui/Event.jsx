@@ -26,6 +26,12 @@ export default class Event extends Component {
     this.setState({eventId:this.props.event._id});
   }
 
+ setVar() {
+    Session.set('Meteor.loginButtons.dropdownVisible', true);
+  }
+
+
+
   render() {
 
     console.log("in events", this.props.event);
@@ -52,7 +58,7 @@ export default class Event extends Component {
   }}
 
     function areTheyRegistered(participants,eventId){
-      debugger;
+
       let show = true;
       if(participants.length > 0){
       let currentUserId = Meteor.userId();
@@ -63,68 +69,93 @@ export default class Event extends Component {
           show = false;
         }
       })
-    } if(show){return (  <button type="button" data={eventId} className="btn btn-primary " onClick={()=>interestedUser(eventId)}  >
-                  Interested!
+    } if(show){return (  <button type="button" data={eventId} className="btn btn-default " onClick={()=>interestedUser(eventId)}  >
+                  Join Event
                 </button>
-                )}
+        )}else{return (<button type="button"  className="btn btn-default" >
+                  You're Registered !
+                </button>)}
   }
 
   function areTheyTheOwner(ownerId,eventId){
     if(ownerId === Meteor.userId()){
-      return (<button className="delete" data={eventId} onClick={deleteThisEvent.bind(this)}>
+      return (<button className="delete" data={eventId} onClick={()=>deleteThisEvent(eventId)}>
                 &times;
               </button>);
     }
   }
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
     return (
-        <div>
-          <div className="col-sm-4">
-            <div className="card card-block">
-              {areTheyTheOwner(this.props.event.owner,this.props.event._id)}
-              <h3 className="card-title">{this.props.event.text.activity}</h3>
-              <p className="card-text">Where: {this.props.event.text.location}
-                <br/>When: {this.props.event.text.startTime.toString()}
-
-
-
-                <button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={'#'+this.props.event._id}>
-                  More Details
-                </button>
-              </p>
-            </div>
-            <div className="modal fade" id={this.props.event._id} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                  <div className="modal-body">
-
-                    Address: {this.props.event.text.address}<br/>
-                    Participants: Min: {this.props.event.text.min} Max: {this.props.event.text.max} <br/>
-                    Price: ${this.props.event.text.price} <br/>
-                    Participants Registered: {this.props.event.participants ? this.props.event.participants.length : "0! Be the first to register!"}
-
-
-                    <ShowGuideProfile userId={this.props.event.owner}/>
-
+      <div>
+        <div className="col-sm-4">
+          <div className="card card-block shadow">
+            {areTheyTheOwner(this.props.event.owner,this.props.event._id)}
+            <h3 className="card-title shadow">{capitalizeFirstLetter(this.props.event.text.activity)}</h3>
+            <p className="card-text">Where: {this.props.event.text.location}
+              <br/>When: {this.props.event.text.date.toString().split('/').reverse().join('-')} at {this.props.event.text.startTime}
+              <br/>
+              <button type="button" className="btn btn-default more-detail" data-toggle="modal" data-target={'#'+this.props.event._id}>
+                More Details
+              </button>
+            </p>
+          </div>
+          <div className="modal fade" id={this.props.event._id} tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className='row'>
+                  <div className="col-xs-12">
+                    <span className='glyphicon glyphicon-remove pull-right p10' data-dismiss="modal" />
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                    {this.props.event.participants ? areTheyRegistered(this.props.event.participants,this.props.event._id) :
-                    <button type="button" className="btn btn-primary " onClick={()=>interestedUser(this.props.event._id)} >
-                      Join Event
-                    </button>
-                  }
+                </div>
+                <div className='row'>
+                  <div className="col-xs-12 m10 image-holder">
+                    <span className='glyphicon glyphicon-picture image'/>
                   </div>
+                </div>
+              <div className='row'>
+                <div className="modal-body col-xs-6">
+                  <h1 className='pb20'>{capitalizeFirstLetter(this.props.event.text.activity)}</h1>
 
+                  <ul>
+                    <li>Where: {this.props.event.text.location}</li>
+                    <li>When: {this.props.event.text.date.toString().split('/').reverse().join('-')} at {this.props.event.text.startTime.toString()} - {this.props.event.text.endTime.toString()}</li>
+                    <li>Address: {this.props.event.text.address}</li>
+                    <li>Participants: Min: {this.props.event.text.min} Max: {this.props.event.text.max}</li>
+                    <li>Price: ${this.props.event.text.price} </li>
+                    <li>Participants Registered: {this.props.event.participants ? this.props.event.participants.length : "0! Be the first to register!"}</li>
+                  </ul>
+                </div>
+                <div className="modal-body col-xs-6">
+
+                  <span className="glyphicon glyphicon-user avatar" />
+                  <ShowGuideProfile userId={this.props.event.owner}/>
                 </div>
               </div>
-            </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
 
+                {Meteor.user() ? (this.props.event.participants ? areTheyRegistered(this.props.event.participants,this.props.event._id) :
+                  <button type="button" className="btn btn-default " onClick={()=>interestedUser(this.props.event._id)} >
+                    Join Event
+                  </button>
+                ):<button className="sign_up_button btn btn-default" data-dismiss="modal" onClick={this.setVar}>
+                Please Login to Register
+              </button>}
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
 
     );
   }
 };
+
+
 
 Event.propTypes = {
   // This component gets the task to display through a React prop.

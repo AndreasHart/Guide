@@ -24,6 +24,10 @@ export default class Profile extends Component {
     files:""
     }
   }
+componentDidMount(){
+  Meteor.subscribe("userData");
+
+  }
 
   onDrop(acceptedFiles, rejectedFiles) {
       console.log('Accepted files: ', acceptedFiles);
@@ -32,6 +36,7 @@ export default class Profile extends Component {
 
   handleProfileSubmit() {
     Meteor.call('profiles.editUserProfile', this.state);
+    FlowRouter.go('/');
 
   }
 
@@ -48,58 +53,57 @@ export default class Profile extends Component {
     return (
       <div>
       <NavBar/>
-      <a href='/'>Back Home</a>
       <div className="editProfile container">
         <form className= "form-horizontal" onSubmit={this.handleProfileSubmit.bind(this)}>
           <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-9">
+            <div className="col-sm-offset-5 col-sm-">
               <h3>Edit Your Profile</h3>
             </div>
           </div>
           <div className="form-group">
-            <div className="col-sm-offset-2">
+            <div className="col-sm-offset-5">
               <Dropzone onDrop={this.onDrop}>
                 Try dropping some files here, or click to select files to upload.
               </Dropzone>
+
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="inputFirstName" className="col-sm-2 control-label">First Name:</label>
-            <div className="col-sm-9">
+            <label htmlFor="inputFirstName" className="col-sm-offset-2 col-sm-2 control-label">First Name:</label>
+            <div className="col-sm-4">
               <input className="form-control" id="inputFirstName" type="text"  value={this.state.firstName}  onChange={this.updateFirstName} />
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="inputLastName" className="col-sm-2 control-label">Last Name:</label>
-            <div className="col-sm-9">
+            <label htmlFor="inputLastName" className="col-sm-offset-2 col-sm-2 control-label">Last Name:</label>
+            <div className="col-sm-4">
               <input className="form-control" id="inputLastName" type="text"  value={this.state.lastName}  onChange={this.updateLastName} />
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="inputDOB" className="col-sm-2 control-label">DOB:</label>
-            <div className="col-sm-9">
+            <label htmlFor="inputDOB" className="col-sm-offset-2 col-sm-2 control-label">DOB:</label>
+            <div className="col-sm-4">
               <input className="form-control" id="inputDOB" type="date" value={this.state.dob} onChange={this.updateDob} />
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="inputBio" className="col-sm-2 control-label">Bio:</label>
-            <div className="col-sm-9">
+            <label htmlFor="inputBio" className="col-sm-offset-2 col-sm-2 control-label">Bio:</label>
+            <div className="col-sm-4">
               <textarea className="form-control" id="inputBio" type="text" value={this.state.bio} onChange={this.updateBio} />
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="inputInterests" className="col-sm-2 control-label">Interests:</label>
-            <div className="col-sm-9">
+            <label htmlFor="inputInterests" className="col-sm-offset-2 col-sm-2 control-label">Interests:</label>
+            <div className="col-sm-4">
               <textarea className="form-control" id="inputInterests" type="text" value={this.state.interests}  onChange={this.updateInterests} />
             </div>
           </div>
           <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-9">
+            <div className="col-sm-offset-4 col-sm-4">
               <input className="btn btn-default" type="submit"/>
             </div>
           </div>
         </form>
-        <GuideProfile/>
       </div>
     </div>
 

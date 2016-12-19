@@ -33,6 +33,7 @@ class ShowGuideProfile extends Component {
       let user = Meteor.users.find({ '_id': id }).fetch();
         if(user[0] && user[0].guideInfo ){
           console.log('inside', user);
+          console.log('inside', user[0].guideInfo);
           return showProfile(user);
 
       };
@@ -40,15 +41,18 @@ class ShowGuideProfile extends Component {
 
 
     function showProfile(user) {
-        console.log('show porfile', user[0]);
-        return ( <div className="card card-block" >
-                  <div>Name: {user[0].info.firstName} {user[0].info.lastName} </div><br/>
-                  <div>Date of Birth: {user[0].info.dob.toDateString} </div><br/>
-                  <div>Bio: {user[0].info.bio} </div><br/>
-                  <div>Interests: {user[0].info.interests} </div><br/>
-                  <div>Certifications: {user[0].guideInfo.certifications} </div><br/>
-                  <div>Experience: {user[0].guideInfo.experience} </div><br/>
-                </div>
+        console.log('show profile', user[0]);
+        return (
+
+          <ul className="show-guide" >
+                  <li>Your Guide: {user[0].info.firstName} {user[0].info.lastName} </li>
+                  <li>Bio: {user[0].info.bio} </li>
+                  <li>Interests: {user[0].info.interests} </li>
+                  <li>Certifications: {user[0].guideInfo.certifications} </li>
+                  <li>Experience: {user[0].guideInfo.experience} </li>
+                </ul>
+
+
                 );
           };
 
@@ -56,21 +60,20 @@ class ShowGuideProfile extends Component {
      function showGuideProfile() {
       if(currentUser){
         return <span className="text">
-        <div>Name: {currentUser.info.firstName} </div> <div> {currentUser.info.lastName} </div><br/>
-        <div>Date of Birth: {currentUser.info.dob} </div><br/>
+        <div>Name:  </div> <div> {currentUser.info.lastName} </div><br/>
         <div>Bio: {currentUser.info.bio} </div><br/>
         <div>Interests: {currentUser.info.interests} </div><br/>
 
         </span>
       }
      };
-
+//{currentUser.info.firstName}
 
      return(
 
       <div className='col-xs-12 container'>
-      <a>{console.log("this",this)}</a>
-      <a>{findUser(this.props.userId)}</a>
+      <div>{console.log("this",this)}</div>
+      <div>{findUser(this.props.userId)}</div>
       </div>
 
     );
@@ -94,3 +97,7 @@ Meteor.subscribe("allUsers");
    users: Meteor.users.find({},{sort:{_id:-1}}).fetch(),
   };
 }, ShowGuideProfile);
+
+//<div>Date of Birth: {currentUser.info.dob} </div><br/>
+//                  <li>Date of Birth: {user[0].info.dob.toDateString} </li>
+

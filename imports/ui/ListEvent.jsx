@@ -18,6 +18,7 @@ class ListEvent extends Component {
       searchLocation: '',
       searchActivity: '',
       searchDate: '',
+      sDate:'',
     };
 
   }
@@ -25,6 +26,12 @@ class ListEvent extends Component {
     console.log("did mount",this.props.events)
 
   }
+
+// to limit ie: 20 characters,
+//can change to: event.target.value.substr(0, 20)
+// updateSearch(event) {
+//   this.setState({search: event.target.value});
+// }
 
   renderEvents() {
     console.log("uselessshit", this.props.events)
@@ -44,17 +51,21 @@ class ListEvent extends Component {
   }
 
   updateActivitySearch(event) {
-    this.setState({searchActivity: event.target.value});
-    console.log("event.target.value:   ", event.target.value);
+    this.setState({searchActivity: event.target.value.substr(0, 20)});
+    // console.log("event.target.value:   ", event.target.value.substr(0, 20));
   }
   updateLocationSearch(event) {
-    this.setState({searchLocation: event.target.value});
-    console.log("in location  event.target.value:   ", event.target.value)
+    this.setState({searchLocation: event.target.value.substr(0, 20)});
+    // console.log("in location  event.target.value:   ", event.target.value.substr(0, 20))
   }
   updateDateSearch(event) {
+    let date = new Date(event.target.value).toDateString().replace(/\//g,'-');
+    console.log('update search',date);
+    this.setState({sDate: event.target.value});
+    event.target.value ? this.setState({searchDate: date}) : this.setState({searchDate:''})
 
-    this.setState({searchDate: event.target.value});
-    console.log("in date")
+    console.log("in date",event.target.value)
+
   }
 
 render(){
@@ -67,7 +78,7 @@ render(){
       if(this.props.events.length > 0){
       filteredListEvent = this.props.events.filter(
         (ev) => {
-          return ev.text.activity.toLowerCase().indexOf(this.state.searchActivity.toLowerCase()) !== -1
+          return ev.text.activity.toLowerCase().indexOf(this.state.searchActivity.toLowerCase()) !== -1;
         }
       );
       filtered = filteredListEvent.filter(
@@ -77,25 +88,28 @@ render(){
 
       filteredDate = filtered.filter(
         (ev)=>{
-          return ev.text.startTime.toString().indexOf(this.state.searchDate) !== -1;
+
+        let date = new Date(ev.text.date).toDateString().replace(/\//g,'-');
+
+          console.log(date);
+          console.log(this.state.searchDate);
+          return date.indexOf(this.state.searchDate) !== -1;
         })
       };
       sorted = filteredDate.sort(
         (a,b)=>{
-          return a.text.startTime - b.text.startTime;
-
+          let aReal = new Date(a.text.date);
+          let bReal = new Date(b.text.date);
+          return (aReal.getTime() - bReal.getTime())
       });
-
-
-
 
     return (
 
       <div className="form-inline browse">
         <form>
-          <div >
+          <div className="footer">
             <div className="form-group">
-              <label>Filter:</label>
+              <label>Search:</label>
             </div>
             <div className="form-group">
               <label htmlFor="filterByActivity">Activity </label>
@@ -112,16 +126,23 @@ render(){
             <div className="form-group">
               <label htmlFor="datepicker">Date </label>
               <input type="date" id="datepicker" className="form-control" name="start"
-                value={this.state.searchDate}
+                value={this.state.sDate}
                 onChange={this.updateDateSearch.bind(this)}/>
             </div>
           </div>
         </form>
-        <div>{sorted.map((event) => {
+        <div>
+
+        {(sorted.length > 0) ? sorted.map((event) => {
+
           return <Event
             event={event}
             key={event._id}/>
-          })}
+          }):(
+          <div className='col-xs-12 noResults row'>
+          <h1>No Results were found</h1>
+          </div>)
+          }
         </div>
       </div>
 
