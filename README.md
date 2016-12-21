@@ -18,7 +18,8 @@ Meteor-React-mongo stack
 4.Start up app
 > meteor
 
-5.Create account and fill out the edit profile and beoming a guide sections
+5.Create account and fill out the edit profile and becoming a guide sections 
+(top right corner dropdown you will have to fill out the 'profile information' first then the 'becoming a guide' section)
 
 6.Go to /seed and press seed events
 
