@@ -72,8 +72,9 @@ export default class Event extends Component {
     } if(show){return (  <button type="button" data={eventId} className="btn btn-default " onClick={()=>interestedUser(eventId)}  >
                   Join Event
                 </button>
-        )}else{return (<button type="button"  className="btn btn-default" >
-                  You're Registered !
+        )}else{
+      return (<button type="button"  className="btn btn-default" >
+                  {"You're Registered !"}
                 </button>)}
   }
 
@@ -120,7 +121,7 @@ export default class Event extends Component {
                   <h1 className='pb20'>{capitalizeFirstLetter(this.props.event.text.activity)}</h1>
 
                   <ul>
-                    <li>Where: {this.props.event.text.location}</li>
+                    <li><a>Where:</a> {this.props.event.text.location}</li>
                     <li>When: {this.props.event.text.date.toString().split('/').reverse().join('-')} at {this.props.event.text.startTime.toString()} - {this.props.event.text.endTime.toString()}</li>
                     <li>Address: {this.props.event.text.address}</li>
                     <li>Participants: Min: {this.props.event.text.min} Max: {this.props.event.text.max}</li>
